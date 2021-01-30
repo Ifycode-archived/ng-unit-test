@@ -1,5 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { HeroComponent } from './hero.component';
 
 describe('HeroComponent (Shallow test)', () => {
@@ -37,7 +38,10 @@ describe('HeroComponent (Shallow test)', () => {
     };
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector('a').textContent).toContain('SuperDude');
-    //dosen't work: expect(fixture.nativeElement.querySelector('a').textContent).toEqual('1 SuperDude');
+    let deA = fixture.debugElement.query(By.css('a'));
+
+    expect(deA.nativeElement.textContent).toContain('SuperDude');
+    //expect(fixture.nativeElement.querySelector('a').textContent).toContain('SuperDude');
+
   });
 });

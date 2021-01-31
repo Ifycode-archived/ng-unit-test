@@ -8,7 +8,7 @@ import { By } from "@angular/platform-browser";
 
 @Directive({
   selector: '[routerLink]',
-  host: { '(click)': 'onClick' }
+  host: { '(click)': 'onClick()' }
 })
 export class RouterLinkDirectiveStub {
   @Input('routerLink') linkParams: any;
@@ -101,5 +101,21 @@ describe('HeroesComponent (deep test)', () => {
 
     const heroText = fixture.debugElement.query(By.css('ul')).nativeElement.textContent;
     expect(heroText).toContain(name);
+  });
+
+  it('should have the correct route for the first hero', () => {
+    mockHeroService.getHeroes.and.returnValue(of(HEROES));
+    fixture.detectChanges();
+
+    const heroComponents = fixture.debugElement.queryAll(By.directive(HeroComponent));
+
+    let routerLink = heroComponents[0].query(By.directive(RouterLinkDirectiveStub))
+      .injector.get(RouterLinkDirectiveStub);
+
+    heroComponents[0].query(By.css('a')).triggerEventHandler('click', null);
+
+    //console.log(routerLink);
+
+    expect(routerLink.navigatedTo).toBe('/detail/1');
   });
 });

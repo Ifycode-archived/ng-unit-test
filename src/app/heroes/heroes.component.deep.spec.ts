@@ -53,4 +53,20 @@ describe('HeroesComponent (deep test)', () => {
       expect(heroComponentDEs[i].componentInstance.hero).toEqual(HEROES[i]);
     }
   });
+
+  //related to @Output() and button click
+  it(`should call heroService.deleteHero when the HeroComponent's
+    delete button is clicked`, () => {
+      spyOn(fixture.componentInstance, 'delete');
+      mockHeroService.getHeroes.and.returnValue(of(HEROES));
+
+      //runs ngOnInit
+      fixture.detectChanges();
+
+      const heroComponents = fixture.debugElement.queryAll(By.directive(HeroComponent));
+      heroComponents[0].query(By.css('button'))
+        .triggerEventHandler('click', {stopPropagation: () => {}});
+
+      expect(fixture.componentInstance.delete).toHaveBeenCalledWith(HEROES[0]);
+  });
 });

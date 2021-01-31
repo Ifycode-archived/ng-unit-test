@@ -63,10 +63,14 @@ describe('HeroesComponent (deep test)', () => {
       //runs ngOnInit
       fixture.detectChanges();
 
+      //method 2:
       const heroComponents = fixture.debugElement.queryAll(By.directive(HeroComponent));
+      (<HeroComponent>heroComponents[0].componentInstance).delete.emit(undefined);
+
+      /*
       heroComponents[0].query(By.css('button'))
         .triggerEventHandler('click', {stopPropagation: () => {}});
-
+      */
       expect(fixture.componentInstance.delete).toHaveBeenCalledWith(HEROES[0]);
   });
 });

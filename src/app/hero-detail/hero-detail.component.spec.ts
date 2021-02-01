@@ -67,6 +67,8 @@ describe('HeroDetailComponent', () => {
     });
   }));
 
+  //Note: use fakeAsync preferably, as it can work with both promise & setTimeout & other types of async code
+
   /*it('should call updateHero when save is called', fakeAsync(() => {
     mockHeroService.updateHero.and.returnValue(of({}));
     fixture.detectChanges();

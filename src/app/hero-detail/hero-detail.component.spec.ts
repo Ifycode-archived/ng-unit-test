@@ -1,4 +1,4 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { HeroService } from '../hero.service';
 import { HeroDetailComponent } from './hero-detail.component';
@@ -56,15 +56,15 @@ describe('HeroDetailComponent', () => {
     expect(fixture.nativeElement.querySelector('h2').textContent).toContain('SUPERDUDE');
   });
 
-  it('should call updateHero when save is called', (done) => {//add done from jasmine to make test async
+  it('should call updateHero when save is called', fakeAsync(() => {
     mockHeroService.updateHero.and.returnValue(of({}));
     fixture.detectChanges();
 
     fixture.componentInstance.save();
+    tick(250);
 
-    setTimeout(() => {
-      expect(mockHeroService.updateHero).toHaveBeenCalled();
-      done();
-    }, 300);
-  });
+    expect(mockHeroService.updateHero).toHaveBeenCalled();
+  }));
 });
+
+//you can just use flush() instead of tick(250), it works.

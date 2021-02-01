@@ -1,4 +1,4 @@
-import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, ComponentFixture, fakeAsync, tick, async } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { HeroService } from '../hero.service';
 import { HeroDetailComponent } from './hero-detail.component';
@@ -56,7 +56,18 @@ describe('HeroDetailComponent', () => {
     expect(fixture.nativeElement.querySelector('h2').textContent).toContain('SUPERDUDE');
   });
 
-  it('should call updateHero when save is called', fakeAsync(() => {
+  it('should call updateHero when save is called', async(() => {
+    mockHeroService.updateHero.and.returnValue(of({}));
+    fixture.detectChanges();
+
+    fixture.componentInstance.save();
+
+    fixture.whenStable().then(() => {
+      expect(mockHeroService.updateHero).toHaveBeenCalled();
+    });
+  }));
+
+  /*it('should call updateHero when save is called', fakeAsync(() => {
     mockHeroService.updateHero.and.returnValue(of({}));
     fixture.detectChanges();
 
@@ -64,7 +75,7 @@ describe('HeroDetailComponent', () => {
     tick(250);
 
     expect(mockHeroService.updateHero).toHaveBeenCalled();
-  }));
+  }));*/
 });
 
 //you can just use flush() instead of tick(250), it works.
